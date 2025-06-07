@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkTalkStory=self.webpackChunkTalkStory||[]).push([[324],{324:(t,i,s)=>{s.r(i),s.d(i,{default:()=>e});class e{constructor(t){this.view=t,this.init()}async init(){await this.view.render(),this.view.bindPostButton(this.handlePostClick.bind(this))}handlePostClick(){this.view.navigateToAddStory()}}}}]);

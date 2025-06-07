@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkTalkStory=self.webpackChunkTalkStory||[]).push([[228],{228:(t,s,i)=>{i.r(s),i.d(s,{default:()=>e});class e{constructor(t){this.view=t,this.init()}async init(){await this.view.render()}}}}]);
