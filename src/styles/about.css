@@ -1,0 +1,88 @@
+.about-banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background: #f0f0f0;
+}
+
+.img-banner {
+  width: 100%;
+  max-width: 400px;
+  margin-right: 2rem;
+}
+
+.about {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f4f4f4;
+  font-family: "Poppins", sans-serif;
+}
+
+.contain-about {
+  text-align: center;
+  max-width: 1000px;
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.about-section h1 {
+  font-size: 2.5rem;
+  color: #333;
+}
+
+.about-section p {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.about-intro p {
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+.about h1 span {
+  color: #5995fd;
+}
+
+.about p {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.btna {
+  margin-top: 30px;
+  display: inline-block;
+  padding: 12px 28px;
+  background-color: #5995fd;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  text-align: center;
+  text-decoration: none;
+}
+
+.btna:hover {
+  background-color: #4d84e2;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
