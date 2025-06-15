@@ -488,6 +488,7 @@ form.sign-up-form {
   0% {
     stroke-dashoffset: 100;
   }
+
   100% {
     stroke-dashoffset: 0;
   }

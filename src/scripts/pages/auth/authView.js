@@ -1,3 +1,5 @@
+import Swal from "sweetalert2";
+
 export default class AuthView {
   constructor() {
     this.render();
@@ -6,10 +8,15 @@ export default class AuthView {
   render() {
     const app = document.getElementById("app");
     app.innerHTML = `
-      <main id="main-content">
-        <div class="container ${
-          location.hash === "#/register" ? "sign-up-mode" : ""
-        }">
+    <main id="main-content">
+    <div class="container ${
+      location.hash === "#/register" ? "sign-up-mode" : ""
+    }">
+      <div style="position: absolute; z-index: 9999; top: 20px; right: 20px;">
+          <button id="subscribe-btn" class="subscribe-btn solid" color: white;">
+            <i class="fas fa-bell"></i> Subscribe
+        </button>
+      </div>
           <div class="forms-container">
             <div class="signin-signup">
               <!-- LOGIN FORM -->
@@ -114,6 +121,16 @@ export default class AuthView {
       </main>
     `;
   }
+
+  bindSubscribeClick() {
+    const btn = document.getElementById("subscribe-btn");
+    if (btn) {
+      btn.addEventListener("click", () => {
+        Swal.fire("Silakan login terlebih dahulu untuk berlangganan", "", "info");
+      });
+    }
+  }
+
 
   bindLoginForm(handler) {
     const form = document.getElementById("login-form");

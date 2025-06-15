@@ -116,6 +116,7 @@
   width: var(--icon-box-dimensions);
   height: var(--icon-box-dimensions);
 }
+
 .container-card .box-card:hover .img-box:after,
 .container-card .box-card:hover .img-box:before {
   opacity: 0;
@@ -195,6 +196,37 @@ button.ghost-btn:hover {
   color: var(--btntext-color);
 }
 
+.bookmark-button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.save-btn,
+.unsave-btn {
+  font-weight: bold;
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.save-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.unsave-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.swal2-container {
+  z-index: 9999 !important;
+}
+
 @media screen and (min-width: 600px) {
   :root {
     --boxheight: 520px;
@@ -223,6 +255,7 @@ button.ghost-btn:hover {
   align-items: center;
   padding: 1rem;
 }
+
 .popup-content {
   background: white;
   border-radius: 10px;

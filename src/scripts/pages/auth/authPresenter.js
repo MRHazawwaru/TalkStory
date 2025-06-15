@@ -13,6 +13,16 @@ export default class AuthPresenter {
     initAuthUI();
     this.view.bindLoginForm(this.handleLogin.bind(this));
     this.view.bindRegisterForm(this.handleRegister.bind(this));
+    this.view.bindSubscribeClick();
+  }
+
+    bindSubscribeClick() {
+    const btn = document.getElementById("subscribe-btn-auth");
+    if (btn) {
+      btn.addEventListener("click", () => {
+        Swal.fappire("Silakan login terlebih dahulu untuk berlangganan", "", "info");
+      });
+    }
   }
 
   async handleLogin({ email, password }) {

@@ -101,9 +101,10 @@ body {
 }
 
 header {
+  justify-self: center;
   background: var(--clr2);
   padding: 50px;
-  width: 100%;
+  width: 1100px;
   border-radius: var(--border-radius);
   position: relative;
   z-index: 99;
@@ -126,7 +127,7 @@ header {
 
 header nav {
   position: absolute;
-  width: 95%;
+  width: 94%;
   left: 7.5%;
   top: 50%;
   transform: translate(-50px, -50%);
@@ -134,10 +135,11 @@ header nav {
 
 header nav ul li {
   display: flex;
+  white-space: nowrap;
   list-style: none;
+  min-width: 80px;
   justify-content: center;
   align-items: center;
-  text-align: center;
   width: 60px;
   height: 10px;
 }
@@ -207,6 +209,7 @@ body.tight .wrapper {
 }
 
 @keyframes bounce {
+
   0%,
   20%,
   50%,
@@ -300,12 +303,13 @@ a {
 .navbar-center {
   list-style: none;
   display: flex;
-  gap: 1rem;
 }
+
 .navbar-center li a {
   text-decoration: none;
   color: #333;
 }
+
 .navbar-right button {
   margin-left: 1rem;
   padding: 0.5rem 1rem;
@@ -314,9 +318,117 @@ a {
   color: #fff;
   cursor: pointer;
   border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
+
 .navbar-right button:hover {
   background: #0056b3;
+  transform: translateY(-2px);
+}
+
+.subscribe-btn {
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 25px;
+  color: white;
+  font-weight: bold;
+  background-color: #2c7a7b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-right: 1rem;
+}
+
+.subscribe-btn:hover {
+  opacity: 0.9;
+}
+
+.btn-blue {
+  background-color: #20c997;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-red {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-blue:hover,
+.btn-red:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.bounce {
+  animation: bounce 0.3s;
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.story-section {
+  justify-items: center;
+  align-content: center;
+}
+
+.btn-book {
+  height: 3rem;
+  width: 15rem;
+  font-weight: bold;
+  background-color: rgb(5 150 105);
+  color: white;
+  border-radius: 0.5rem;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
+    0 2px 0 0 #059669,
+    0 4px 0 0 #047857,
+    0 6px 0 0 #065f46,
+    0 8px 0 0 #064e3b,
+    0 8px 16px 0 rgba(5, 150, 105, 0.5);
+  overflow: hidden;
+}
+
+.btn-book:hover {
+  transform: translateY(4px);
+  background-color: #08d2ad;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
+    0 1px 0 0 #08d2ad,
+    0 2px 0 0 #0cc490,
+    0 3px 0 0 #09976f,
+    0 4px 0 0 #0a7e5f,
+    0 4px 8px 0 rgba(5, 150, 105, 0.5);
+}
+
+.btn-book:hover i {
+  animation: bounce 1s infinite;
+}
+
+.empty-bookmark {
+  justify-items: center;
+  align-items: center;
 }
 
 .btn {
@@ -360,10 +472,14 @@ main {
   .wrapper {
     padding: 50px 10px 100px 10px !important;
   }
+
   header {
     flex-direction: column;
+    height: 150px;
+    width: 620px;
     gap: 1rem;
   }
+
   header nav ul {
     flex-direction: column;
   }
@@ -374,6 +490,8 @@ main {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 605px;
+    margin-left: 11px;
   }
 
   .navbar-center {
@@ -383,5 +501,18 @@ main {
     justify-content: center;
     align-items: center;
     width: 100%;
+  }
+
+  .navbar-right {
+    display: flex;
+    flex-direction: row;
+    margin-right: 1rem;
+    align-items: center;
+  }
+
+  .navbar-right button {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
   }
 }

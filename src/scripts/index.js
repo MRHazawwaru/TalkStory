@@ -1,3 +1,4 @@
+import { registerServiceWorker } from "./utils/pushHelper.js";
 import "../styles/app.css";
 import "../styles/auth.css";
 import "../styles/home.css";
@@ -9,19 +10,13 @@ import "jquery";
 
 import UrlParser from "./routes/url-parser.js";
 import routes from "./routes/routes.js";
-
 import AppView from "./pages/app/appView.js";
 import AppPresenter from "./pages/app/appPresenter.js";
 
-const protectedPages = ["home", "about", "story-list", "add-story"];
+registerServiceWorker();
 
+const protectedPages = ["home", "about", "story-list", "add-story", "bookmark"];
 let currentPresenter = null;
-
-document.addEventListener("DOMContentLoaded", () => {
-  const token = localStorage.getItem("token");
-  document.body.classList.toggle("logged-in", !!token);
-  initScrollAnimation();
-});
 
 const viewMap = {
   home: () => import("./pages/home/homeView.js"),
@@ -29,6 +24,7 @@ const viewMap = {
   "story-list": () => import("./pages/storyList/storyListView.js"),
   "add-story": () => import("./pages/addStory/addStoryView.js"),
   auth: () => import("./pages/auth/authView.js"),
+  "bookmark": () => import("./pages/bookmark/bookmarkView.js"),
 };
 
 const presenterMap = {
@@ -37,9 +33,23 @@ const presenterMap = {
   "story-list": () => import("./pages/storyList/storyListPresenter.js"),
   "add-story": () => import("./pages/addStory/addStoryPresenter.js"),
   auth: () => import("./pages/auth/authPresenter.js"),
+  "bookmark": () => import("./pages/bookmark/bookmarkPresenter.js"),
 };
 
-const main = async () => {
+const renderAppShell = () => {
+  const appRoot = document.getElementById("app");
+  if (!appRoot) {
+    const wrapper = document.createElement("div");
+    wrapper.id = "app";
+    document.body.appendChild(wrapper);
+  }
+  const appView = new AppView();
+  appView.render();
+  const appPresenter = new AppPresenter(appView);
+  appPresenter.init();
+};
+
+const loadPage = async () => {
   const url = UrlParser.parseActiveUrl();
   const page = routes[url];
 
@@ -59,45 +69,53 @@ const main = async () => {
     currentPresenter.destroy();
   }
 
-  if (page === "auth") {
-    const appRoot = document.getElementById("app");
-    if (appRoot) appRoot.innerHTML = "";
-    const viewModule = await viewMap[page]();
-    const presenterModule = await presenterMap[page]();
-    const view = new viewModule.default();
-    new presenterModule.default(view);
-    return;
-  }
+  await new Promise((resolve) => setTimeout(resolve, 0));
 
-  document.body.innerHTML = `<div id="app"></div>`;
-  const appView = new AppView();
-  new AppPresenter(appView);
+  const viewModule = await viewMap[page]().catch((err) => {
+    console.error("Gagal memuat view chunk:", err);
+    location.reload();
+  });
 
-  const viewModule = await viewMap[page]();
   const presenterModule = await presenterMap[page]();
-
   const view = new viewModule.default();
   currentPresenter = new presenterModule.default(view);
 };
 
-window.addEventListener("hashchange", main);
-window.addEventListener("load", main);
+const main = async () => {
+  renderAppShell();
+  await loadPage();
+};
 
-document.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("hashchange", main);
+window.addEventListener("load", async () => {
   const token = localStorage.getItem("token");
   document.body.classList.toggle("logged-in", !!token);
+  initScrollAnimation();
+  await main();
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  const skipLink = document.querySelector(".skip-link");
-  const mainContent = document.querySelector("#main-content");
-  if (skipLink && mainContent) {
-    skipLink.addEventListener("click", function (event) {
-      event.preventDefault();
+document.addEventListener("click", (e) => {
+  const skipLink = e.target.closest(".skip-link");
+  if (skipLink) {
+    e.preventDefault();
+    const mainContent = document.querySelector("#main-content");
+    if (mainContent) {
       skipLink.blur();
       mainContent.setAttribute("tabindex", "-1");
       mainContent.focus();
       mainContent.scrollIntoView();
-    });
+    }
   }
 });
+
+if (process.env.NODE_ENV === "development") {
+  navigator.serviceWorker.getRegistrations().then((regs) => {
+    for (const reg of regs) {
+      reg.unregister().then(() => console.log("SW unregistered (dev)"));
+    }
+  });
+  caches.keys().then((keys) => {
+    keys.forEach((k) => caches.delete(k));
+    console.log("Cache cleared (dev)");
+  });
+}

@@ -6,5 +6,10 @@ module.exports = merge(common, {
   devServer: {
     static: "./dist",
     open: true,
+    hot: true,
+  liveReload: false,
+  client: {
+    overlay: true,
+    },
   },
 });

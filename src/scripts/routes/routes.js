@@ -6,6 +6,7 @@ const routes = {
   "/add-story": "add-story",
   "/login": "auth",
   "/register": "auth",
+  "/bookmark": "bookmark",
   "/not-found": "not-found",
 };
 

@@ -8,6 +8,8 @@ const urlBase64ToUint8Array = (base64String) => {
 
 export const subscribePush = async () => {
   const registration = await navigator.serviceWorker.ready;
+  const existing = await registration.pushManager.getSubscription();
+  if (existing) return existing; 
   const vapidKey =
     "BCCs2eonMI-6H2ctvFaWg-UYdDv387Vno_bzUzALpB442r2lCnsHmtrx8biyPi_E-1fSGABK_Qs_GlvPoJJqxbk";
 
@@ -16,8 +18,8 @@ export const subscribePush = async () => {
     applicationServerKey: urlBase64ToUint8Array(vapidKey),
   });
 
-  // Kirim subscription ke server API (jika tersedia)
   console.log("Push subscribed:", subscription);
+  return subscription;
 };
 export const unsubscribePush = async () => {
   const registration = await navigator.serviceWorker.ready;
@@ -35,9 +37,14 @@ export const unsubscribePush = async () => {
   }
 };
 export const isPushSubscribed = async () => {
-  const registration = await navigator.serviceWorker.ready;
-  const subscription = await registration.pushManager.getSubscription();
-  return subscription !== null;
+  try {
+    const registration = await navigator.serviceWorker.ready;
+    const subscription = await registration.pushManager.getSubscription();
+    return subscription !== null;
+  } catch (error) {
+    console.warn("Gagal cek status push:", error);
+    return false;
+  }
 };
 export const requestPushPermission = async () => {
   if ("Notification" in window && "serviceWorker" in navigator) {
@@ -93,19 +100,36 @@ export const registerServiceWorker = async () => {
 export const initPushNotifications = async () => {
   if (isPushSupported()) {
     const registration = await registerServiceWorker();
-    if (registration) {
+    if (!registration) return false;
+
+    const currentPermission = Notification.permission;
+
+    if (currentPermission === "granted") {
       const isSubscribed = await isPushSubscribed();
       if (!isSubscribed) {
-        const permissionGranted = await requestPushPermission();
-        if (permissionGranted) {
-          await subscribePush();
-        }
+        await subscribePush();
+      }
+      return true;
+    }
+
+    if (currentPermission === "default") {
+      const permissionGranted = await requestPushPermission();
+      if (permissionGranted) {
+        await subscribePush();
+        return true;
+      } else {
+        return false;
       }
     }
+
+    console.warn("Push notification permission previously denied.");
+    return false;
   } else {
     console.warn("Push notifications tidak didukung di browser ini");
+    return false;
   }
 };
+
 export const handlePushEvent = (event) => {
   let notificationData = {};
 
