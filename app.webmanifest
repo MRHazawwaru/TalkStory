@@ -1,7 +1,9 @@
 {
+  "id": "/#/",
+  "start_url": "/#/",
+  "scope": "/",
   "name": "TalkStory",
   "short_name": "TalkStory",
-  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#5995fd",
@@ -45,15 +47,23 @@
     }
   ],
   "screenshots": [
-    { "src": "/public/screenshots/desktop.png", "sizes": "800x600", "type": "image/png" },
-    { "src": "/public/screenshots/mobile.png", "sizes": "400x700", "type": "image/png" }
+    {
+      "src": "/screenshots/desktop.png",
+      "sizes": "800x600",
+      "type": "image/png"
+    },
+    {
+      "src": "/screenshots/mobile.png",
+      "sizes": "400x700",
+      "type": "image/png"
+    }
   ],
   "shortcuts": [
     {
       "name": "Tambah Cerita",
       "short_name": "Tambah",
       "description": "Akses cepat ke halaman tambah cerita",
-      "url": "/#/add-story",
+      "url": "/?source=pwa#/add-story",
       "icons": [
         {
           "src": "images/icons/add-x512.png",
@@ -66,7 +76,7 @@
       "name": "Catatan Tersimpan",
       "short_name": "Tersimpan",
       "description": "Lihat daftar catatan tersimpan.",
-      "url": "/#/story-list",
+      "url": "/?source=pwa#/bookmark",
       "icons": [
         {
           "src": "images/icons/storylist-x512.png",
