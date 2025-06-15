@@ -81,21 +81,24 @@ export const isPushSupported = () => {
   );
 };
 export const registerServiceWorker = async () => {
-  if ("serviceWorker" in navigator) {
-    try {
-      const registration = await navigator.serviceWorker.register(
-        "/service-worker.js"
-      );
-      console.log("Service Worker terdaftar:", registration);
-      return registration;
-    } catch (error) {
-      console.error("Gagal mendaftarkan Service Worker:", error);
-      throw error;
+    if ("serviceWorker" in navigator) {
+        try {
+            const registration = await navigator.serviceWorker.register(
+                "service-worker.js",
+                {
+                    scope: "/TalkStory/",
+                }
+            );
+            console.log("Service Worker terdaftar:", registration);
+            return registration;
+        } catch (error) {
+            console.error("Gagal mendaftarkan Service Worker:", error);
+            throw error;
+        }
+    } else {
+        console.warn("Service Worker tidak didukung di browser ini");
+        return null;
     }
-  } else {
-    console.warn("Service Worker tidak didukung di browser ini");
-    return null;
-  }
 };
 export const initPushNotifications = async () => {
   if (isPushSupported()) {
