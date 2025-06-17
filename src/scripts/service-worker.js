@@ -55,8 +55,8 @@ self.addEventListener('push', (event) => {
     
     const options = {
         body: notificationData.body || 'Ada cerita baru menanti kamu!',
-        icon: '/TalkStory/icons/icon-192x192.png',
-        badge: '/TalkStory/icons/icon-72x72.png',
+        icon: '/TalkStory/icons/icon-x192.png',
+        badge: '/TalkStory/icons/icon-x72.png',
         data: {
             url: '/#/',
         },

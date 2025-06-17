@@ -50,6 +50,7 @@ export default class AppView {
     `;
     bindSkipToContent();
     await new Promise((resolve) => setTimeout(resolve, 0));
+    this.subscribeButton = document.getElementById("subscribe-btn");
   }
 
   bindPostButton(handler) {

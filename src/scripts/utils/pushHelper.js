@@ -1,3 +1,5 @@
+import CONFIG from "../config";
+
 const urlBase64ToUint8Array = (base64String) => {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
@@ -6,21 +8,31 @@ const urlBase64ToUint8Array = (base64String) => {
   return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)));
 };
 
+
 export const subscribePush = async () => {
   const registration = await navigator.serviceWorker.ready;
   const existing = await registration.pushManager.getSubscription();
-  if (existing) return existing; 
-  const vapidKey =
-    "BCCs2eonMI-6H2ctvFaWg-UYdDv387Vno_bzUzALpB442r2lCnsHmtrx8biyPi_E-1fSGABK_Qs_GlvPoJJqxbk";
+  if (existing) return existing;
 
   const subscription = await registration.pushManager.subscribe({
     userVisibleOnly: true,
-    applicationServerKey: urlBase64ToUint8Array(vapidKey),
+    applicationServerKey: urlBase64ToUint8Array(CONFIG.VAPID_KEY),
   });
 
-  console.log("Push subscribed:", subscription);
+  await fetch("https://story-api.dicoding.dev/v1/notifications/subscribe", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify(subscription),
+  });
+
+  console.log("Push subscribed & dikirim ke server:", subscription);
   return subscription;
 };
+
+
 export const unsubscribePush = async () => {
   const registration = await navigator.serviceWorker.ready;
 
@@ -133,24 +145,25 @@ export const initPushNotifications = async () => {
   }
 };
 
-export const handlePushEvent = (event) => {
-  let notificationData = {};
+// export const handlePushEvent = (event) => {
+//   let notificationData = {};
 
-  if (event.data) {
-    notificationData = event.data.json();
-  }
+//   if (event.data) {
+//     notificationData = event.data.json();
+//   }
 
-  const options = {
-    body: notificationData.message || "Ada cerita baru menanti kamu!",
-    icon: "/public/icons/icon-192x192.png",
-    badge: "/public/icons/icon-72x72.png",
-  };
+//   const options = {
+//     body: notificationData.message || "Ada cerita baru menanti kamu!",
+//     icon: "/public/icons/icon-192x192.png",
+//     badge: "/public/icons/icon-72x72.png",
+//   };
 
-  event.waitUntil(
-    self.registration.showNotification(
-      notificationData.title || "TalkStory",
-      options
-    )
-  );
-};
-self.addEventListener("push", handlePushEvent);
+//   event.waitUntil(
+//     self.registration.showNotification(
+//       notificationData.title || "TalkStory",
+//       options
+//     )
+//   );
+// };
+// self.addEventListener("push", handlePushEvent);
+
